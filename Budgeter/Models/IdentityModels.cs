@@ -19,7 +19,7 @@ namespace Budgeter.Models
         public string DisplayName { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual Household Household { get; set; }
-        public int HouseholdId { get; set; }
+        public int? HouseholdId { get; set; }
 
         public ApplicationUser()
         {
