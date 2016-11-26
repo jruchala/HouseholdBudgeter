@@ -15,6 +15,7 @@ namespace Budgeter.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -320,6 +321,32 @@ namespace Budgeter.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        public ActionResult ChangeName()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            return View(user);
+        }
+
+        //
+        // POST: /Manage/ChangeName
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeName([Bind(Include = "Id,FirstName,LastName,Email")]ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Users.Attach(user);
+                user.UserName = user.Email;
+                db.Entry(user).Property("FirstName").IsModified = true;
+                db.Entry(user).Property("LastName").IsModified = true;
+                db.Entry(user).Property("Email").IsModified = true;
+                db.Entry(user).Property("UserName").IsModified = true;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
         }
 
         protected override void Dispose(bool disposing)
