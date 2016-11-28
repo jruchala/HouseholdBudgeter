@@ -289,6 +289,7 @@
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\sharkhouse.png" />
     <Content Include="Content\metisMenu\metisMenu.css" />
     <Content Include="Content\metisMenu\metisMenu.js" />
     <Content Include="Content\metisMenu\metisMenu.min.css" />
