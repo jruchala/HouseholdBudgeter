@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Budgeter.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,12 @@ namespace Budgeter.Controllers
 {
     public class HomeController : Controller
     {
+        ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
+            ViewBag.HouseholdCount = db.Housholds.Count();
+            ViewBag.UserCount = db.Users.Count();
             return View();
         }
 
