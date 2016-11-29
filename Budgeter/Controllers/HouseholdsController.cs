@@ -14,6 +14,15 @@ namespace Budgeter.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [AuthorizeHousehold]
+        public async Task<ActionResult> LeaveHousehold()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            await ControllerContext.HttpContext.RefreshAuthentication(user);
+            return View();
+        }
+
         // GET: Households
         public ActionResult Index()
         {
@@ -21,6 +30,7 @@ namespace Budgeter.Controllers
         }
 
         // GET: Households/Details/5
+        [AuthorizeHousehold]
         public ActionResult Details(int? id)
         {
             if (id == null)

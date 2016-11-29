@@ -7,6 +7,10 @@
 <div class="container">
     <div class="row">
         <h2>Household: @Html.DisplayFor(model => model.Name)</h2>
+        <a href="@Url.Action("Edit", "Households", new { id = Model.Id }, "")" role="button" class="btn btn-xs"><i class="fa fa-fw fa-edit"></i></a>
+
+        @if (User.IsInRole("Admin"))
+        { @Html.ActionLink(" | Back to List", "Index")}
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -53,12 +57,12 @@
         <h4>Accounts</h4>
         @foreach (var account in Model.Accounts)
             {
-                <p>
-                    @Html.DisplayFor(modelItem => account.Name)
-                    @Html.DisplayFor(modelItem => account.Balance)
-                </p>
-            }
-        
+            <p>
+                @Html.DisplayFor(modelItem => account.Name)
+                @Html.DisplayFor(modelItem => account.Balance)
+            </p>
+        }
+
     </div>
     <div class="row">
         <a href="@Url.Action("Create", "Accounts", new { HouseholdId = Model.Id }, "")" role="button" class="btn btn-success">Add a Bank Account</a>
@@ -72,8 +76,4 @@
     <div class="row">
         <h4>Leave</h4>
     </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
 </div>
