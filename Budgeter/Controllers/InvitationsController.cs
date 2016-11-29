@@ -60,11 +60,13 @@ namespace Budgeter.Controllers
                 invitation.Code = Membership.GeneratePassword(12, 2);
                 if (invitation.Email != null)
                 {
-                    await helper.InviteToHousehold(invitation.household.Name, invitation.Email);
+                    await helper.InviteToHousehold(invitation.household.Name, invitation.Email, invitation.Code);
+                    
                 }
                 db.Invitations.Add(invitation);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.InvitationSent = "An invitation has been sent.";
+                return RedirectToAction("Details", "Households", new { Id = invitation.HouseholdId});
             }
 
             ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", invitation.HouseholdId);

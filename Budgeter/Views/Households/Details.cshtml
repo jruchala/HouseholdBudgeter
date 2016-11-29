@@ -6,7 +6,7 @@
 
 <div class="container">
     <div class="row">
-        <h2>Household</h2>
+        <h2>Household: @Html.DisplayFor(model => model.Name)</h2>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -36,6 +36,7 @@
                 }
             </dl>
         </div>
+
         <div class="col-md-4 panel panel-primary">
             <div class="panel-heading">
                 About Households
@@ -49,7 +50,23 @@
         </div>
     </div>
     <div class="row">
+        <h4>Accounts</h4>
+        @{ foreach (var account in Model.Accounts)
+            {
+                <p>
+                    @Html.Display(account.Name + account.Balance)
+                </p>
+            }
+        }
+    </div>
+    <div class="row">
+        <a href="@Url.Action("Create", "Accounts", new { HouseholdId = Model.Id }, "")" role="button" class="btn btn-success">Add a Bank Account</a>
+        <a href="@Url.Action("Index", "Accounts", new { householdId = Model.Id }, "")" role="button" class="btn btn-primary">View Bank Accounts</a>
+    </div>
+
+    <div class="row">
         @Html.Partial("_InvitationPartial", new Budgeter.Models.Invitation())
+        @ViewBag.InvitationSent
     </div>
     <div class="row">
         <h4>Leave</h4>
