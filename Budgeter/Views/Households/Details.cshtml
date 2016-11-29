@@ -22,6 +22,19 @@
                 </dd>
 
             </dl>
+            <dl>
+                @{ foreach (var user in Model.Users)
+                    {
+                        <dt>
+                            @Html.Display(user.FirstName + user.LastName)
+
+                        </dt>
+                        <dd>
+                            @Html.Display(user.Email)
+                        </dd>
+                    }
+                }
+            </dl>
         </div>
         <div class="col-md-4 panel panel-primary">
             <div class="panel-heading">
@@ -36,7 +49,7 @@
         </div>
     </div>
     <div class="row">
-        <h4>Invite</h4>
+        @Html.Partial("_InvitationPartial", new Budgeter.Models.Invitation())
     </div>
     <div class="row">
         <h4>Leave</h4>
