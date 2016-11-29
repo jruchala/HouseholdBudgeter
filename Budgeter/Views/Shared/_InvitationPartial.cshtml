@@ -8,6 +8,7 @@
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" value=@ViewBag.HouseholdId name="HouseholdId">
     </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })

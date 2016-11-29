@@ -28,6 +28,7 @@ namespace Budgeter.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Household household = db.Housholds.Find(id);
+            ViewBag.HouseholdId = id;
             if (household == null)
             {
                 return HttpNotFound();

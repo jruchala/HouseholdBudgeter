@@ -355,6 +355,7 @@
     <Content Include="Content\font-awesome\scss\_variables.scss" />
     <Content Include="Content\datatables\images\Sorting icons.psd" />
     <Content Include="Content\datatables-responsive\dataTables.responsive.scss" />
+    <Compile Include="Helpers\InvitationHelper.cs" />
     <None Include="Properties\PublishProfiles\jruchala-budget - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\jruchala-budget - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\jruchala-budget.pubxml" />

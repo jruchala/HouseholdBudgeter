@@ -7,12 +7,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
+using System.Web.Security;
+using Budgeter.Helpers;
+using System.Threading.Tasks;
 
 namespace Budgeter.Controllers
 {
     public class InvitationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private InvitationHelper helper = new InvitationHelper();
 
         // GET: Invitations
         public ActionResult Index()
@@ -48,10 +52,16 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Email,Code,HouseholdId")] Invitation invitation)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Email,Code,HouseholdId")] Invitation invitation)
         {
             if (ModelState.IsValid)
             {
+                invitation.household = db.Housholds.Where(h => h.Id == invitation.HouseholdId).First();
+                invitation.Code = Membership.GeneratePassword(12, 2);
+                if (invitation.Email != null)
+                {
+                    await helper.InviteToHousehold(invitation.household.Name, invitation.Email);
+                }
                 db.Invitations.Add(invitation);
                 db.SaveChanges();
                 return RedirectToAction("Index");
