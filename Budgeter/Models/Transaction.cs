@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,8 @@ namespace Budgeter.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Amount { get; set; }
         public string Type { get; set; }
         public bool Reconciled { get; set; }

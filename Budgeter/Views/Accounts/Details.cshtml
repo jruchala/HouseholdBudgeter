@@ -4,46 +4,69 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Account</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Household.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Household.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Balance)
-        </dt>
-
-        <dd>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Transactions in @Html.Label(Model.Name)</h2>
+            <h4>@Html.Label(Model.Household.Name)</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h5><i class="fa fa-edit"></i> Edit Transaction</h5>
+        </div>
+        <div class="col-md-1 col-md-offset-3">
+            Balance
+            <br />
             @Html.DisplayFor(model => model.Balance)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReconciledBalance)
-        </dt>
-
-        <dd>
+        </div>
+        <div class="col-md-1">
+            Reconciled
+            <br />
             @Html.DisplayFor(model => model.ReconciledBalance)
-        </dd>
-
-    </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 well">
+            Description<br />
+            Amount<br />
+            Reconciled Amount<br />
+            Category<br />
+            Date<br />
+        </div>
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Reconciled</th>
+                        <th>Updated By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td><i class="fa fa-fw fa-edit"></i> <i class="fa fa-fw fa-trash"></i></td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Date)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Category)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Amount)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Reconciled)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.EnteredByUser)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<hr />
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
