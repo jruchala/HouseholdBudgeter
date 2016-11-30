@@ -48,7 +48,7 @@ namespace Budgeter.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<Household> Housholds { get; set; }
+        public DbSet<Household> Households { get; set; }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Invitation> Invitations { get; set; }

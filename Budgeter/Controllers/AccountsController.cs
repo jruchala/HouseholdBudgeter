@@ -59,7 +59,7 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", account.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", account.HouseholdId);
             return View(account);
         }
 
@@ -75,7 +75,7 @@ namespace Budgeter.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", account.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", account.HouseholdId);
             return View(account);
         }
 
@@ -92,7 +92,7 @@ namespace Budgeter.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", account.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", account.HouseholdId);
             return View(account);
         }
 

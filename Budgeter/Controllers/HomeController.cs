@@ -13,7 +13,7 @@ namespace Budgeter.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.HouseholdCount = db.Housholds.Count();
+            ViewBag.HouseholdCount = db.Households.Count();
             ViewBag.UserCount = db.Users.Count();
             return View();
         }

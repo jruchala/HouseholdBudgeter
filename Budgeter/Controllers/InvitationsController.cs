@@ -43,7 +43,7 @@ namespace Budgeter.Controllers
         // GET: Invitations/Create
         public ActionResult Create()
         {
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name");
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name");
             return View();
         }
 
@@ -56,7 +56,7 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
-                invitation.household = db.Housholds.Where(h => h.Id == invitation.HouseholdId).First();
+                invitation.household = db.Households.Where(h => h.Id == invitation.HouseholdId).First();
                 invitation.Code = Membership.GeneratePassword(12, 2);
                 if (invitation.Email != null)
                 {
@@ -69,7 +69,7 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Details", "Households", new { Id = invitation.HouseholdId});
             }
 
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", invitation.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", invitation.HouseholdId);
             return View(invitation);
         }
 
@@ -85,7 +85,7 @@ namespace Budgeter.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", invitation.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", invitation.HouseholdId);
             return View(invitation);
         }
 
@@ -102,7 +102,7 @@ namespace Budgeter.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.HouseholdId = new SelectList(db.Housholds, "Id", "Name", invitation.HouseholdId);
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", invitation.HouseholdId);
             return View(invitation);
         }
 

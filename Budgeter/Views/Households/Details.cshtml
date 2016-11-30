@@ -15,30 +15,24 @@
     <div class="row">
         <div class="col-md-8">
             <h4>Members</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-
-            </dl>
-            <dl>
-                @{ foreach (var user in Model.Users)
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
                     {
-                        <dt>
-                            @Html.Display(user.FirstName + user.LastName)
-
-                        </dt>
-                        <dd>
-                            @Html.Display(user.Email)
-                        </dd>
+                        <tr>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                        </tr>
                     }
-                }
-            </dl>
+                </tbody>
+            </table>
+            <hr />
         </div>
 
         <div class="col-md-4 panel panel-primary">

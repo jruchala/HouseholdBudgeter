@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
+using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 
 namespace Budgeter.Controllers
 {
@@ -14,30 +16,30 @@ namespace Budgeter.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [AuthorizeHousehold]
-        public async Task<ActionResult> LeaveHousehold()
-        {
-            var userId = User.Identity.GetUserId();
-            var user = db.Users.Find(userId);
-            await ControllerContext.HttpContext.RefreshAuthentication(user);
-            return View();
-        }
+        //[AuthorizeHousehold]
+        //public async Task<ActionResult> LeaveHousehold()
+        //{
+        //    var userId = User.Identity.GetUserId();
+        //    var user = db.Users.Find(userId);
+        //    await ControllerContext.HttpContext.RefreshAuthentication(user);
+        //    return View();
+        //}
 
         // GET: Households
         public ActionResult Index()
         {
-            return View(db.Housholds.ToList());
+            return View(db.Households.ToList());
         }
 
         // GET: Households/Details/5
-        [AuthorizeHousehold]
+        //[AuthorizeHousehold]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Household household = db.Housholds.Find(id);
+            Household household = db.Households.Find(id);
             ViewBag.HouseholdId = id;
             if (household == null)
             {
@@ -62,7 +64,7 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Housholds.Add(household);
+                db.Households.Add(household);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -77,7 +79,7 @@ namespace Budgeter.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Household household = db.Housholds.Find(id);
+            Household household = db.Households.Find(id);
             if (household == null)
             {
                 return HttpNotFound();
@@ -108,7 +110,7 @@ namespace Budgeter.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Household household = db.Housholds.Find(id);
+            Household household = db.Households.Find(id);
             if (household == null)
             {
                 return HttpNotFound();
@@ -121,8 +123,8 @@ namespace Budgeter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Household household = db.Housholds.Find(id);
-            db.Housholds.Remove(household);
+            Household household = db.Households.Find(id);
+            db.Households.Remove(household);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
