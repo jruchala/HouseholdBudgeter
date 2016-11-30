@@ -4,19 +4,20 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
+using System.Data.Entity.Validation;
 
 namespace Budgeter.Helpers
 {
     public static class HouseholdHelper
     {
-        public static string GetHouseholdId(this IIdentity user)
+        public static int? GetHouseholdId(this IIdentity user)
         {
             var claimsIdentity = (ClaimsIdentity)user;
             var householdClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "HouseholdId");
 
             if (householdClaim != null)
             {
-                return householdClaim.Value;
+                return Int32.Parse(householdClaim.Value);
 
             }
             else

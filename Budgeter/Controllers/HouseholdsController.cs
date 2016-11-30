@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Budgeter.Models;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
+using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
@@ -56,14 +57,25 @@ namespace Budgeter.Controllers
             return View();
         }
 
-        // POST: Households/LeaveHousehold
+        // POST: Households/LeaveHousehold/5
         [AuthorizeHousehold]
-        public async Task<ActionResult> LeaveHousehold()
+        [HttpPost]
+        public async Task<ActionResult> LeaveHousehold(bool? confirmLeaveHousehold)
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            await ControllerContext.HttpContext.RefreshAuthentication(user);
-            return View();
+            var householdId = User.Identity.GetHouseholdId();
+            var household = db.Households.Find(householdId);
+
+            if (confirmLeaveHousehold != null && household.Users.Contains(user))
+            {
+                household.Users.Remove(user);
+                db.SaveChanges();
+                await ControllerContext.HttpContext.RefreshAuthentication(user);
+                return RedirectToAction("JoinHousehold");
+            }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Households/Details/5
