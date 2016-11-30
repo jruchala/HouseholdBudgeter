@@ -56,11 +56,13 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 invitation.household = db.Households.Where(h => h.Id == invitation.HouseholdId).First();
                 invitation.Code = Membership.GeneratePassword(12, 2);
+                var callbackUrl = Url.Action("JoinHousehold", "Households", new { code = invitation.Code }, protocol: Request.Url.Scheme);
                 if (invitation.Email != null)
                 {
-                    await helper.InviteToHousehold(invitation.household.Name, invitation.Email, invitation.Code);
+                    await helper.InviteToHousehold(invitation.household.Name, invitation.Email, invitation.Code, callbackUrl);
                     
                 }
                 db.Invitations.Add(invitation);
