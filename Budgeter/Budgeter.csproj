@@ -432,6 +432,7 @@
     <Content Include="Views\Invitations\Details.cshtml" />
     <Content Include="Views\Invitations\Edit.cshtml" />
     <Content Include="Views\Invitations\Index.cshtml" />
+    <Content Include="Views\Households\JoinHousehold.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

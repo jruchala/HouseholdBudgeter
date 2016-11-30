@@ -31,6 +31,39 @@ namespace Budgeter.Controllers
             return View(db.Households.ToList());
         }
 
+        // GET: Households/JoinHousehold
+        public ActionResult JoinHousehold()
+        {
+            return View();
+        }
+           
+
+        // POST: Households/JoinHousehold
+        [HttpPost]
+        public async Task<ActionResult> JoinHousehold(string inviteCode)
+        {
+            var invite = db.Invitations.FirstOrDefault(i => i.Code == inviteCode);
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (invite != null && invite.Expired == false)
+            {
+                invite.Expired = true;
+                db.Invitations.Attach(invite);
+                db.Entry(invite).Property("Expired").IsModified = true;
+                db.SaveChanges();
+                var household = db.Households.Find(invite.HouseholdId);
+                if (household != null)
+                {
+                    household.Users.Add(user);
+                    db.SaveChanges();
+                    await ControllerContext.HttpContext.RefreshAuthentication(user);
+                    return RedirectToAction("Index");
+                }
+            }
+            ViewBag.Message = "That invitation is invalid or has expired.";
+            return View();
+        }
+
         // GET: Households/Details/5
         //[AuthorizeHousehold]
         public ActionResult Details(int? id)
@@ -64,6 +97,8 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+                household.Users.Add(user);
                 db.Households.Add(household);
                 db.SaveChanges();
                 return RedirectToAction("Index");

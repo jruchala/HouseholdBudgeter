@@ -16,5 +16,6 @@ namespace Budgeter.Models
 
         public virtual Household household { get; set; }
         public int HouseholdId { get; set; }
+        public bool Expired { get; internal set; }
     }
 }
