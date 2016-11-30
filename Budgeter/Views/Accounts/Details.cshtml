@@ -28,6 +28,7 @@
     </div>
     <div class="row">
         <div class="col-md-3 well">
+            @Html.Partial("_AddTransactions", new Budgeter.Models.Transaction())
             Description<br />
             Amount<br />
             Reconciled Amount<br />
@@ -71,3 +72,11 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section scripts{
+
+    <!--DataTables-->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('.table').DataTable();
+    </script>
+}

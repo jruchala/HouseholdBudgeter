@@ -35,6 +35,8 @@ namespace Budgeter.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.AccountId = id;
             return View(account);
         }
 

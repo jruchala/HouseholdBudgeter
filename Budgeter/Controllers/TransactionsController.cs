@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
+using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
@@ -36,6 +37,8 @@ namespace Budgeter.Controllers
             return View(transaction);
         }
 
+        
+
         // GET: Transactions/Create
         public ActionResult Create()
         {
@@ -61,6 +64,14 @@ namespace Budgeter.Controllers
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             return View(transaction);
+        }
+
+        // GET: Transactions/_AddTransaction
+        public ActionResult _AddTransaction()
+        {
+            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name");
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            return View();
         }
 
         // GET: Transactions/Edit/5
