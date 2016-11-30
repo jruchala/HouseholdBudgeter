@@ -16,14 +16,6 @@ namespace Budgeter.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        //[AuthorizeHousehold]
-        //public async Task<ActionResult> LeaveHousehold()
-        //{
-        //    var userId = User.Identity.GetUserId();
-        //    var user = db.Users.Find(userId);
-        //    await ControllerContext.HttpContext.RefreshAuthentication(user);
-        //    return View();
-        //}
 
         // GET: Households
         public ActionResult Index()
@@ -64,8 +56,18 @@ namespace Budgeter.Controllers
             return View();
         }
 
+        // POST: Households/LeaveHousehold
+        [AuthorizeHousehold]
+        public async Task<ActionResult> LeaveHousehold()
+        {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            await ControllerContext.HttpContext.RefreshAuthentication(user);
+            return View();
+        }
+
         // GET: Households/Details/5
-        //[AuthorizeHousehold]
+        [AuthorizeHousehold]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -101,7 +103,7 @@ namespace Budgeter.Controllers
                 household.Users.Add(user);
                 db.Households.Add(household);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = household.Id });
             }
 
             return View(household);
