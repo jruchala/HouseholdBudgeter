@@ -113,6 +113,15 @@ namespace Budgeter.Controllers
             {
                 var user = db.Users.Find(User.Identity.GetUserId());
                 household.Users.Add(user);
+                Budget budget = new Budget();
+                budget.HouseholdId = household.Id;
+                budget.household = household;
+                budget.Amount = 0M;
+                budget.Name = "New Budget for " + household.Name;
+                
+                db.Budgets.Add(budget);
+
+                household.Budgets.Add(budget);
                 db.Households.Add(household);
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = household.Id });
