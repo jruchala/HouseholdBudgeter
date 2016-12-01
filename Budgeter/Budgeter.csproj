@@ -239,6 +239,7 @@
     <Compile Include="Models\RefreshAuthentication.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\TransactionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -440,7 +441,7 @@
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
-    <Content Include="Views\Shared\_AddTransactions.cshtml" />
+    <Content Include="Views\Shared\_AddTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
 using Microsoft.AspNet.Identity;
+using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
@@ -17,10 +18,26 @@ namespace Budgeter.Controllers
 
         // GET: Accounts
         [Authorize]
-        public ActionResult Index(int householdId)
+        public ActionResult Index()
         {
+            var householdId = User.Identity.GetHouseholdId();
             var accounts = db.Accounts.Where(a => a.HouseholdId == householdId);
             return View(accounts.ToList());
+        }
+
+        //POST: Accounts/AddAccount
+        [HttpPost]
+        public ActionResult AddAccount(string accountName)
+        {
+            Account account = new Account();
+            account.Name = accountName;
+            account.Balance = 0M;
+            account.ReconciledBalance = 0M;
+            var household = db.Households.Find(User.Identity.GetHouseholdId());
+            household.Accounts.Add(account);
+            db.Accounts.Add(account);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Accounts/Details/5

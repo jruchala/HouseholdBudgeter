@@ -13,8 +13,15 @@ namespace Budgeter.Models
         [Display(Name = "Budget")]
         public string Name { get; set; }
 
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public decimal Amount { get; set; }
+
         public virtual Household household { get; set; }
         public int HouseholdId { get; set; }
+      
+
+
     }
 }
 
