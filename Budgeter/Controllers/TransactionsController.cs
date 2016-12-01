@@ -57,14 +57,13 @@ namespace Budgeter.Controllers
 
 
         // GET: Transactions/AddTransaction
-        public ActionResult AddTransaction(int? id)
+        public ActionResult _AddTransaction(int? id)
         {
             try
             {
                 ViewBag.AccountId = id;
-                var household = db.Households.Find(User.Identity.GetHouseholdId());
-                var categories = household.Categories.Select(b => b.BudgetItems).Distinct().ToList();
-                ViewBag.CategoryId = categories;
+                var categories = db.Categories.Select(c => c.Id);
+                ViewBag.CategoryId = new SelectList(categories);
                 return PartialView();
             }
             catch
@@ -75,7 +74,7 @@ namespace Budgeter.Controllers
 
         // POST: Transactions/AddTransaction
         [HttpPost]
-        public ActionResult AddTransaction([Bind(Include = "Amount, Description, TransactionType")] Transaction transaction, int? accountId, int? budgetCategoryId)
+        public ActionResult AddTransaction([Bind(Include = "Amount, Description, TransactionType")] Transaction transaction, int CategoryId, int accountId)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +83,7 @@ namespace Budgeter.Controllers
                 transaction.EnteredById = userId;
                 if (transaction.TransactionType == TransactionType.Expense)
                 {
-                    transaction.CategoryId = (int)budgetCategoryId;
+                    transaction.CategoryId = (int)CategoryId;
                     UpdateAccountBalance(false, false, transaction.Amount, accountId);
                 }
                 else
@@ -99,7 +98,7 @@ namespace Budgeter.Controllers
                 account.Transactions.Add(thisTransaction);
                 db.SaveChanges();
             }
-            return RedirectToAction("Details", new { id = transaction.AccountId });
+            return RedirectToAction("Details", "Accounts", new { id = accountId });
 
         }
 

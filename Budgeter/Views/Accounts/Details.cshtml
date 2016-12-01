@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    ViewBag.AccountId = Model.Id;
 }
 
 <div class="container">
@@ -28,12 +29,8 @@
     </div>
     <div class="row">
         <div class="col-md-3 well">
-            @Html.Partial("_AddTransaction", new Budgeter.Models.Transaction())
-            Description<br />
-            Amount<br />
-            Reconciled Amount<br />
-            Category<br />
-            Date<br />
+            @*@Html.Partial("~/Views/Transactions/_AddTransaction.cshtml", new Budgeter.Models.Transaction { AccountId = Model.Id })*@
+            @Html.Action("_AddTransaction", "Transactions", new { id = Model.Id })
         </div>
         <div class="col-md-9">
             <table class="table table-bordered">

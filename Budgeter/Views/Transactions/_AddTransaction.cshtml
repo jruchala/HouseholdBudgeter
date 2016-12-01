@@ -3,6 +3,7 @@
 @{
     var AccountId = ViewBag.AccountId;
     var BudgetCategories = ViewBag.CategoryId;
+    
 }
 
 @using (Html.BeginForm("AddTransaction", "Transactions", FormMethod.Post))
@@ -32,17 +33,19 @@
             </div>
 
             <div class="form-group">
-                <label for="model.Type" class="control-label col-md-3">Type</label>
+                <label for="model.TransactionType" class="control-label col-md-3">Type</label>
                 <div class="col-md-9">
                     @Html.EnumDropDownListFor(model => model.TransactionType, htmlAttributes: new { @class = "form-control" })           
                     @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group" id="categories">
-                <label for="model.BudgetCategoryId" class="control-label col-md-3">Category</label>
+            <div class="form-group">
+                @*<label for="model.BudgetCategoryId" class="control-label col-md-3">Category</label>*@
+                @Html.LabelFor(model => model.CategoryId, new { @class = "col-md-3 control-label" })
                 <div class="col-md-9">
-                    @Html.DropDownList("BudgetCategoryId", new SelectList(BudgetCategories, "Id", "Name", ""), new { @class = "form-control" })
+                    @*@Html.DropDownList("BudgetCategoryId", new SelectList(BudgetCategories, "Id", "Name", ""), new { @class = "form-control" })*@
+                     @Html.DropDownList("CategoryId", new SelectList(BudgetCategories), "Category", new { @class = "form-control" })
                 </div>
             </div>
 
