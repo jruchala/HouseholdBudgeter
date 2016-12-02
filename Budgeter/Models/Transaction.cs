@@ -19,12 +19,12 @@ namespace Budgeter.Models
         public decimal Amount { get; set; }
         public bool Reconciled { get; set; }
         [Display(Name ="Reconciled Amount")]
-        public decimal ReconciledAmount { get; set; }
+        public decimal? ReconciledAmount { get; set; }
         [Display(Name ="Account")]
         public int AccountId { get; set; }
         [Display(Name ="Category")]
         public int CategoryId { get; set; }
-        [Display(Name ="Entered by")]
+        [Display(Name ="Entered By")]
         public string EnteredById { get; set; }
 
         public virtual Account Account { get; set; }
