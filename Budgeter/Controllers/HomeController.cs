@@ -1,4 +1,5 @@
-﻿using Budgeter.Models;
+﻿using Budgeter.Helpers;
+using Budgeter.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,12 @@ namespace Budgeter.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.HouseholdCount = db.Households.Count();
-            ViewBag.UserCount = db.Users.Count();
-            return View();
+            var householdId = User.Identity.GetHouseholdId();
+            var model = db.Households.Find(householdId);
+            ViewBag.AccountsCount = model.Accounts.Count();
+            ViewBag.MemberCount = model.Users.Count();
+            ViewBag.HouseholdName = model.Name;
+            return View(model);
         }
 
         public ActionResult About()

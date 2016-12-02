@@ -14,83 +14,92 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-            <h4>Members</h4>
+            <div class="row">
+                <h4>Members</h4>
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in Model.Users)
-                    {
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>@user.FirstName @user.LastName</td>
-                            <td>@user.Email</td>
+                            <th>Name</th>
+                            <th>Email</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <hr />
-        </div>
-
-        <div class="col-md-4 panel panel-primary">
-            <div class="panel-heading">
-                About Households
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.FirstName @user.LastName</td>
+                                <td>@user.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <hr />
             </div>
-            <div class="panel-body">
-                <p>Households are how we group accounts and users.</p>
-                <p>Each user belongs to only one household, but the household can have many users.</p>
-                <p>Each user in your household has full access to all account data.</p>
-            </div>
-
-        </div>
-    </div>
-    <div class="row">
-        <h4>Accounts</h4>
-        @foreach (var account in Model.Accounts)
+            <div class="row">
+                <h4>Accounts</h4>
+                @foreach (var account in Model.Accounts)
             {
-            <p>
-                <a href="@Url.Action("Details", "Accounts", new { id = account.Id}, "")">
-                    @Html.DisplayFor(modelItem => account.Name)
-                    @Html.DisplayFor(modelItem => account.Balance)
-                </a>
-            </p>
-        }
+                    <p>
+                        <a href="@Url.Action("Details", "Accounts", new { id = account.Id}, "")">
+                            @Html.DisplayFor(modelItem => account.Name)
+                            @Html.DisplayFor(modelItem => account.Balance)
+                        </a>
+                    </p>
+                }
 
-    </div>
-    <div class="row">
-        <a href="@Url.Action("Create", "Accounts", new { HouseholdId = Model.Id }, "")" role="button" class="btn btn-success">Add a Bank Account</a>
-        <a href="@Url.Action("Index", "Accounts", new { householdId = Model.Id }, "")" role="button" class="btn btn-primary">View Bank Accounts</a>
-    </div>
-
-    <div class="row">
-        @Html.Partial("_InvitationPartial", new Budgeter.Models.Invitation())
-        @ViewBag.InvitationSent
-    </div>
-    <!-- begin Leave Household section-->
-    <div class="col-md-12">
-        <h4>Leave</h4>
-        <p>Leave your current household and start a new one.</p>
-
-        @using (Html.BeginForm("LeaveHousehold", "Households"))
-            {
-            @Html.AntiForgeryToken()
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.Id)
             </div>
-            <div class="form-group">
-                <input type="checkbox" name="confirmLeaveHousehold" value="true" class="col-xs-1" />
-                <p>I understand that I will no longer have access to my current household's accounts.</p>
+            <div class="row">
+                <a href="@Url.Action("Create", "Accounts", new { HouseholdId = Model.Id }, "")" role="button" class="btn btn-success">Add a Bank Account</a>
+                <a href="@Url.Action("Index", "Accounts", new { householdId = Model.Id }, "")" role="button" class="btn btn-primary">View Bank Accounts</a>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Leave Household" class="btn btn-danger" />
-            </div>
-        }
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4>About Households</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Households are how we group accounts and users.</p>
+                        <p>Each user belongs to only one household, but the household can have many users.</p>
+                        <p>Each user in your household has full access to all account data.</p>
+                    </div>
 
+                </div>
+            </div>
+            <div class="row">
+                @Html.Partial("_InvitationPartial", new Budgeter.Models.Invitation())
+                @ViewBag.InvitationSent
+            </div>
+            <div class="row">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h4>Leave</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>Leave your current household and start a new one.</p>
+
+                        @using (Html.BeginForm("LeaveHousehold", "Households"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-horizontal">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Id)
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="confirmLeaveHousehold" value="true" class="col-xs-1" />
+                                <p>I understand that I will no longer have access to my current household's accounts.</p>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Leave Household" class="btn btn-danger" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    
 
     </div>
-</div>
