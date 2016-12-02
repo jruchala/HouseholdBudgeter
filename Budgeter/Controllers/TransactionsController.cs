@@ -176,6 +176,35 @@ namespace Budgeter.Controllers
             return RedirectToAction("Details", "Accounts", new { id = AccountId });
         }
 
+        // GET: Transactions/Void/5
+        public ActionResult Void(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Transaction transaction = db.Transactions.Find(id);
+            if (transaction == null)
+            {
+                return HttpNotFound();
+            }
+            return View(transaction);
+        }
+
+        // POST: Transactions/Void/5
+        [HttpPost, ActionName("Void")]
+        [ValidateAntiForgeryToken]
+        public ActionResult VoidConfirmed(int id, int AccountId)
+        {
+            Transaction transaction = db.Transactions.Find(id);
+            bool AddBalance = (transaction.TransactionType == TransactionType.Expense) ? true : false;
+            UpdateAccountBalance(AddBalance, false, transaction.Amount, transaction.AccountId);
+            transaction.Description += " VOID";
+            
+            db.SaveChanges();
+            return RedirectToAction("Details", "Accounts", new { id = AccountId });
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

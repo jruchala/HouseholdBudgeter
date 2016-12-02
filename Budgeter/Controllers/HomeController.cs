@@ -20,6 +20,9 @@ namespace Budgeter.Controllers
             ViewBag.MemberCount = model.Users.Count();
             ViewBag.HouseholdName = model.Name;
             ViewBag.BudgetsCount = model.Budgets.Count();
+            ViewBag.AccountAmount = model.Accounts.FirstOrDefault().Balance;
+            ViewBag.AccountName = model.Accounts.FirstOrDefault().Name;
+
             return View(model);
         }
 

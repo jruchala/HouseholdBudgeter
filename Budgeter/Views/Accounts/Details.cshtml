@@ -49,6 +49,7 @@
                             <td>
                                 <a href="@Url.Action("Edit", "Transactions", new { id = transaction.Id})"><i class="fa fa-fw fa-edit"></i></a>
                                 <a href="@Url.Action("Delete", "Transactions", new { id = transaction.Id, AccountId = transaction.AccountId })"><i class="fa fa-fw fa-trash"></i></a>
+                                <a href="@Url.Action("Void", "Transactions", new { id = transaction.Id, AccountId = transaction.AccountId })"><i class="fa fa-fw fa-ban"></i></a>
                             </td>
                             <td>@Html.DisplayFor(modelItem => transaction.Date)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Description)</td>
