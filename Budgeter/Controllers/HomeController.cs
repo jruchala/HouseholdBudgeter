@@ -14,16 +14,23 @@ namespace Budgeter.Controllers
 
         public ActionResult Index()
         {
-            var householdId = User.Identity.GetHouseholdId();
-            var model = db.Households.Find(householdId);
-            ViewBag.AccountsCount = model.Accounts.Count();
-            ViewBag.MemberCount = model.Users.Count();
-            ViewBag.HouseholdName = model.Name;
-            ViewBag.BudgetsCount = model.Budgets.Count();
-            ViewBag.AccountAmount = model.Accounts.FirstOrDefault().Balance;
-            ViewBag.AccountName = model.Accounts.FirstOrDefault().Name;
+            if (Request.IsAuthenticated)
+            {
+                var householdId = User.Identity.GetHouseholdId();
+                var model = db.Households.Find(householdId);
+                ViewBag.AccountsCount = model.Accounts.Count();
+                ViewBag.MemberCount = model.Users.Count();
+                ViewBag.HouseholdName = model.Name;
+                ViewBag.BudgetsCount = model.Budgets.Count();
+                ViewBag.AccountAmount = model.Accounts.FirstOrDefault().Balance;
+                ViewBag.AccountName = model.Accounts.FirstOrDefault().Name;
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-            return View(model);
         }
 
         public ActionResult About()

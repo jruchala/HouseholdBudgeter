@@ -2,6 +2,8 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Log in";
+    Layout = null;
+
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -11,7 +13,9 @@
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
+                <h2>Welcome to HouseFin <small>a Budget application</small></h2>
+
+                <h4>Log in or @Html.ActionLink("register", "Register")</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
@@ -45,11 +49,12 @@
                     @Html.ActionLink("Register as a new user", "Register") | @Html.ActionLink("Forgot Your Password?", "ForgotPassword")
                 </p>
                 @* Enable this once you have account confirmation enabled for password reset functionality
-                    <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>*@
             }
         </section>
+
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">

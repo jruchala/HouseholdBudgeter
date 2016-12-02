@@ -39,7 +39,7 @@ namespace Budgeter.Controllers
             household.Accounts.Add(account);
             db.Accounts.Add(account);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Households", new { id = household.Id });
         }
 
         // GET: Accounts/Details/5
@@ -75,9 +75,11 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
+                var household = db.Households.Find(User.Identity.GetHouseholdId());
+                household.Accounts.Add(account);
                 db.Accounts.Add(account);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                RedirectToAction("Details", "Households", new { id = household.Id });
             }
 
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", account.HouseholdId);
