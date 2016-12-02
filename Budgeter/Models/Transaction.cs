@@ -11,6 +11,7 @@ namespace Budgeter.Models
         //TODO:Transaction model
         public int Id { get; set; }
         public string Description { get; set; }
+        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C}")]

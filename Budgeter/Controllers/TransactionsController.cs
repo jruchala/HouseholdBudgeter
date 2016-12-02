@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Budgeter.Controllers
 {
@@ -37,11 +38,31 @@ namespace Budgeter.Controllers
         }
 
         // GET: Transactions/Create
-        public ActionResult Create()
+        public ActionResult Create(int accountId)
         {
-            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name");
+            ViewBag.AccountId = accountId;
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
             return View();
+        }
+
+        public bool UpdateAccountBalance(bool IsIncome, bool IsReconciled, decimal Amount, int? AccountId)
+        {
+            var account = db.Accounts.Find(AccountId);
+            account.Balance = (IsIncome) ? account.Balance + Amount : account.Balance - Amount;
+            if (IsReconciled)
+            {
+                account.ReconciledBalance = (IsIncome) ? account.ReconciledBalance + Amount : account.ReconciledBalance - Amount;
+            }
+            else
+            {
+                account.ReconciledBalance = account.ReconciledBalance;
+            }
+            db.Accounts.Attach(account);
+            db.Entry(account).Property("Balance").IsModified = true;
+            db.Entry(account).Property("ReconciledBalance").IsModified = true;
+            db.SaveChanges();
+
+            return true;
         }
 
         // POST: Transactions/Create
@@ -49,16 +70,27 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById,TransactionType")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Description,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
+                transaction.EnteredById = User.Identity.GetUserId();
+                transaction.Date = DateTime.Now;
+                if (transaction.TransactionType == TransactionType.Expense)
+                {
+                    
+                    UpdateAccountBalance(false, false, transaction.Amount, transaction.AccountId);
+                }
+                else
+                {
+                    UpdateAccountBalance(true, false, transaction.Amount, transaction.AccountId);
+                }
                 db.Transactions.Add(transaction);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Accounts", new { id = transaction.AccountId });
             }
 
-            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
+            ViewBag.AccountId = transaction.AccountId;
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             return View(transaction);
         }

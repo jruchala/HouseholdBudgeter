@@ -7,29 +7,29 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <h2>Transactions in @Html.Label(Model.Name)</h2>
-            <h4>@Html.Label(Model.Household.Name)</h4>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-6">
-            <h5><i class="fa fa-edit"></i> Edit Transaction</h5>
+            <h2>Transactions in @Html.Label(Model.Name)</h2>
+            <a href="@Url.Action("Details", "Households", new { id = Model.HouseholdId})"><h4>@Html.Label(Model.Household.Name)</h4></a>
         </div>
-        <div class="col-md-1 col-md-offset-3">
-            Balance
-            <br />
-            @Html.DisplayFor(model => model.Balance)
-        </div>
-        <div class="col-md-1">
-            Reconciled
-            <br />
-            @Html.DisplayFor(model => model.ReconciledBalance)
+        <div class="col-md-6 well">
+            <div class="row">
+                <div class="col-md-6 ">
+                    <h4>Balance</h4>
+                    <br />
+                    @Html.DisplayFor(model => model.Balance)
+                </div>
+                <div class="col-md-6">
+                    <h4>Reconciled</h4>
+                    <br />
+                    @Html.DisplayFor(model => model.ReconciledBalance)
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-9">
-            <table class="table table-bordered">
+        <div class="col-md-12">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -45,10 +45,11 @@
                     @foreach (var transaction in Model.Transactions)
                     {
                         <tr>
-                            <td><i class="fa fa-fw fa-edit"></i> <i class="fa fa-fw fa-trash"></i></td>
+                            <td><a href="@Url.Action("Edit", "Transactions", new { id = transaction.Id})"><i class="fa fa-fw fa-edit"></i></a> 
+                            <a href="@Url.Action("Delete", "Transactions", new { id = transaction.Id })"><i class="fa fa-fw fa-trash"></i></a></td>
                             <td>@Html.DisplayFor(modelItem => transaction.Date)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Description)</td>
-                            <td>@Html.DisplayFor(modelItem => transaction.Category)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.Category.Name)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Amount)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Reconciled)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.EnteredByUser)</td>
@@ -62,6 +63,7 @@
 
 <hr />
 <p>
+    <a href="@Url.Action("Create", "Transactions", new { accountId = Model.Id })" role="button" class="btn btn-primary">Add Transaction</a>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
