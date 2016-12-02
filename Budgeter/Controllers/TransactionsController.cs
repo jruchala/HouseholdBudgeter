@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
 using Microsoft.AspNet.Identity;
+using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
@@ -107,7 +108,10 @@ namespace Budgeter.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
+            var householdId = User.Identity.GetHouseholdId();
+            var household = db.Households.Find(householdId);
+            var accounts = household.Accounts.ToList();
+            ViewBag.AccountId = new SelectList(accounts, "Id", "Name", transaction.AccountId);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             return View(transaction);
         }
@@ -117,13 +121,27 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById,TransactionType")] Transaction transaction)
+        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
+                var originalTransaction = db.Transactions.AsNoTracking().FirstOrDefault(t => t.Id == transaction.Id);
+                decimal AccountAmount = transaction.Amount - originalTransaction.Amount;
+                if (transaction.TransactionType == TransactionType.Expense)
+                {
+                    UpdateAccountBalance(false, false, AccountAmount, transaction.AccountId);
+                }
+                else
+                {
+                    UpdateAccountBalance(true, false, AccountAmount, transaction.AccountId);
+                }
+                db.Transactions.Attach(transaction);
+                db.Entry(transaction).Property("Amount").IsModified = true;
+                db.Entry(transaction).Property("Description").IsModified = true;
+                db.Entry(transaction).Property("Date").IsModified = true;
                 db.Entry(transaction).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Accounts", new { id = transaction.AccountId });
             }
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
@@ -148,12 +166,14 @@ namespace Budgeter.Controllers
         // POST: Transactions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, int AccountId)
         {
             Transaction transaction = db.Transactions.Find(id);
+            bool AddBalance = (transaction.TransactionType == TransactionType.Expense) ? true : false;
+            UpdateAccountBalance(AddBalance, false, transaction.Amount, transaction.AccountId);
             db.Transactions.Remove(transaction);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Accounts", new { id = AccountId });
         }
 
         protected override void Dispose(bool disposing)

@@ -36,6 +36,7 @@
                         <th>Date</th>
                         <th>Description</th>
                         <th>Category</th>
+                        <th>Type</th>
                         <th>Amount</th>
                         <th>Reconciled</th>
                         <th>Updated By</th>
@@ -45,11 +46,14 @@
                     @foreach (var transaction in Model.Transactions)
                     {
                         <tr>
-                            <td><a href="@Url.Action("Edit", "Transactions", new { id = transaction.Id})"><i class="fa fa-fw fa-edit"></i></a> 
-                            <a href="@Url.Action("Delete", "Transactions", new { id = transaction.Id })"><i class="fa fa-fw fa-trash"></i></a></td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Transactions", new { id = transaction.Id})"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href="@Url.Action("Delete", "Transactions", new { id = transaction.Id, AccountId = transaction.AccountId })"><i class="fa fa-fw fa-trash"></i></a>
+                            </td>
                             <td>@Html.DisplayFor(modelItem => transaction.Date)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Description)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Category.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => transaction.TransactionType)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Amount)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Reconciled)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.EnteredByUser)</td>
@@ -64,8 +68,7 @@
 <hr />
 <p>
     <a href="@Url.Action("Create", "Transactions", new { accountId = Model.Id })" role="button" class="btn btn-primary">Add Transaction</a>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="@Url.Action("Details", "Households", new { id = Model.HouseholdId})" role="button" class="btn btn-default"><i class="fa fa-fw fa-home"></i>Back to Household</a>
 </p>
 @section scripts{
 

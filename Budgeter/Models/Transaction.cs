@@ -12,11 +12,11 @@ namespace Budgeter.Models
         public int Id { get; set; }
         public string Description { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Amount { get; set; }
-
         public bool Reconciled { get; set; }
         [Display(Name ="Reconciled Amount")]
         public decimal ReconciledAmount { get; set; }

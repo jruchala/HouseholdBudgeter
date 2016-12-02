@@ -19,6 +19,7 @@ namespace Budgeter.Controllers
             ViewBag.AccountsCount = model.Accounts.Count();
             ViewBag.MemberCount = model.Users.Count();
             ViewBag.HouseholdName = model.Name;
+            ViewBag.BudgetsCount = model.Budgets.Count();
             return View(model);
         }
 
