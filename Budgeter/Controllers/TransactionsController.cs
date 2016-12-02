@@ -7,8 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
-using Budgeter.Helpers;
-using Microsoft.AspNet.Identity;
 
 namespace Budgeter.Controllers
 {
@@ -19,24 +17,8 @@ namespace Budgeter.Controllers
         // GET: Transactions
         public ActionResult Index()
         {
-            var householdId = User.Identity.GetHouseholdId();
-            var transactions = db.Accounts.Where(a => a.HouseholdId == householdId);
+            var transactions = db.Transactions.Include(t => t.Account).Include(t => t.Category);
             return View(transactions.ToList());
-        }
-
-        //POST: Transaction/AddAccount
-        [HttpPost]
-        public ActionResult AddAccount(string accountName)
-        {
-            Account account = new Account();
-            account.Name = accountName;
-            account.Balance = 0M;
-            account.ReconciledBalance = 0M;
-            var household = db.Households.Find(User.Identity.GetHouseholdId());
-            household.Accounts.Add(account);
-            db.Accounts.Add(account);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         // GET: Transactions/Details/5
@@ -54,74 +36,6 @@ namespace Budgeter.Controllers
             return View(transaction);
         }
 
-
-
-        // GET: Transactions/AddTransaction
-        public ActionResult _AddTransaction(int? id)
-        {
-            try
-            {
-                ViewBag.AccountId = id;
-                var categories = db.Categories.Select(c => c.Id);
-                ViewBag.CategoryId = new SelectList(categories);
-                return PartialView();
-            }
-            catch
-            {
-                return PartialView("_Error");
-            }
-        }
-
-        // POST: Transactions/AddTransaction
-        [HttpPost]
-        public ActionResult AddTransaction([Bind(Include = "Amount, Description, TransactionType")] Transaction transaction, int CategoryId, int accountId)
-        {
-            if (ModelState.IsValid)
-            {
-                transaction.Date = DateTime.Now;
-                var userId = User.Identity.GetUserId();
-                transaction.EnteredById = userId;
-                if (transaction.TransactionType == TransactionType.Expense)
-                {
-                    transaction.CategoryId = (int)CategoryId;
-                    UpdateAccountBalance(false, false, transaction.Amount, accountId);
-                }
-                else
-                {
-                    UpdateAccountBalance(true, false, transaction.Amount, accountId);
-                }
-                db.Transactions.Add(transaction);
-                db.SaveChanges();
-
-                var thisTransaction = db.Transactions.Find(transaction.Id);
-                var account = db.Accounts.Find(accountId);
-                account.Transactions.Add(thisTransaction);
-                db.SaveChanges();
-            }
-            return RedirectToAction("Details", "Accounts", new { id = accountId });
-
-        }
-
-        public bool UpdateAccountBalance(bool IsIncome, bool IsReconciled, decimal Amount, int? AccountId)
-        {
-            var account = db.Accounts.Find(AccountId);
-            account.Balance = (IsIncome) ? account.Balance + Amount : account.Balance - Amount;
-            if (IsReconciled)
-            {
-                account.ReconciledBalance = (IsIncome) ? account.ReconciledBalance + Amount : account.ReconciledBalance - Amount;
-            }
-            else
-            {
-                account.ReconciledBalance = account.ReconciledBalance;
-            }
-            db.Accounts.Attach(account);
-            db.Entry(account).Property("Balance").IsModified = true;
-            db.Entry(account).Property("ReconciledBalance").IsModified = true;
-            db.SaveChanges();
-
-            return true;
-        }
-
         // GET: Transactions/Create
         public ActionResult Create()
         {
@@ -135,7 +49,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Description,Date,Amount,Type,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
@@ -148,8 +62,6 @@ namespace Budgeter.Controllers
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             return View(transaction);
         }
-
-
 
         // GET: Transactions/Edit/5
         public ActionResult Edit(int? id)
@@ -173,7 +85,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Type,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById")] Transaction transaction)
+        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,EnteredById,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {

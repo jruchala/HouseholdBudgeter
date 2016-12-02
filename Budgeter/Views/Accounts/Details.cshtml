@@ -28,10 +28,6 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3 well">
-            @*@Html.Partial("~/Views/Transactions/_AddTransaction.cshtml", new Budgeter.Models.Transaction { AccountId = Model.Id })*@
-            @Html.Action("_AddTransaction", "Transactions", new { id = Model.Id })
-        </div>
         <div class="col-md-9">
             <table class="table table-bordered">
                 <thead>
