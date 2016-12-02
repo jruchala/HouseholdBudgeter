@@ -22,6 +22,8 @@ namespace Budgeter.Controllers
         {
             var householdId = User.Identity.GetHouseholdId();
             var accounts = db.Accounts.Where(a => a.HouseholdId == householdId);
+            ViewBag.HouseholdId = householdId;
+            ViewBag.HouseholdName = db.Households.Find(householdId).Name;
             return View(accounts.ToList());
         }
 

@@ -17,7 +17,8 @@ namespace Budgeter.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Balance { get; set; }
         [DisplayFormat(DataFormatString = "{0:C}")]
-        public decimal ReconciledBalance { get; set; }
+        [Display(Name="Reconciled Balance")]
+        public decimal? ReconciledBalance { get; set; }
 
         public int HouseholdId { get; set; }
         public virtual Household Household { get; set; }
