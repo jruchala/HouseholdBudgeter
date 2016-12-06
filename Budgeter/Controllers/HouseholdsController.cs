@@ -107,7 +107,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Household household)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] Household household)
         {
             if (ModelState.IsValid)
             {
@@ -120,11 +120,17 @@ namespace Budgeter.Controllers
                 budget.Name = "New Budget for " + household.Name;
                 
                 db.Budgets.Add(budget);
-
+                user.HouseholdId = household.Id;
                 household.Budgets.Add(budget);
                 db.Households.Add(household);
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = household.Id });
+                if (household != null)
+                {
+                    await ControllerContext.HttpContext.RefreshAuthentication(user);
+                    return RedirectToAction("Details", new { id = household.Id });
+                }
+                return RedirectToAction("Index", "Home");
+
             }
 
             return View(household);

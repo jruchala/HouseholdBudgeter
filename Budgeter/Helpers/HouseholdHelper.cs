@@ -10,25 +10,32 @@ namespace Budgeter.Helpers
 {
     public static class HouseholdHelper
     {
-        public static int? GetHouseholdId(this IIdentity user)
-        {
-            var claimsIdentity = (ClaimsIdentity)user;
-            var householdClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "HouseholdId");
-
-            if (householdClaim != null)
-            {
-                return Int32.Parse(householdClaim.Value);
-
-            }
-            else
-                return null;
-        }
-
         public static bool IsInHousehold(this IIdentity user)
         {
             var cUser = (ClaimsIdentity)user;
             var hid = cUser.Claims.FirstOrDefault(c => c.Type == "HouseholdId");
             return (hid != null && !string.IsNullOrWhiteSpace(hid.Value));
         }
+
+        public static int? GetHouseholdId(this IIdentity user)
+        {
+            if (IsInHousehold(user))
+            {
+                var claimsIdentity = (ClaimsIdentity)user;
+                var householdClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "HouseholdId");
+
+                if (householdClaim != null)
+                {
+                    int value = Int32.Parse(householdClaim.Value);
+                    return value;
+                }
+
+                else
+                    return null;
+            }
+            else
+                return null;
+        }
+
     }
 }

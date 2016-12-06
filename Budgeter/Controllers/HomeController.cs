@@ -18,13 +18,25 @@ namespace Budgeter.Controllers
             {
                 var householdId = User.Identity.GetHouseholdId();
                 var model = db.Households.Find(householdId);
-                ViewBag.AccountsCount = model.Accounts.Count();
-                ViewBag.MemberCount = model.Users.Count();
-                ViewBag.HouseholdName = model.Name;
-                ViewBag.BudgetsCount = model.Budgets.Count();
-                ViewBag.AccountAmount = model.Accounts.FirstOrDefault().Balance;
-                ViewBag.AccountName = model.Accounts.FirstOrDefault().Name;
-                return View(model);
+                if (householdId != null)
+                {
+                    ViewBag.AccountsCount = model.Accounts.Count();
+                    ViewBag.MemberCount = model.Users.Count();
+                    ViewBag.HouseholdName = model.Name;
+                    ViewBag.BudgetsCount = model.Budgets.Count();
+                    if (model.Accounts.Any())
+                    {
+                        ViewBag.AccountAmount = "$" + model.Accounts.FirstOrDefault().Balance;
+                        ViewBag.AccountName = "in " + model.Accounts.FirstOrDefault().Name;
+                    }
+                    else
+                    {
+                        ViewBag.AccountAmount = "Add a bank account to start tracking your budget";
+                    }
+                    return View(model);
+                }
+                else
+                    return RedirectToAction("Create", "Households");
             }
             else
             {
