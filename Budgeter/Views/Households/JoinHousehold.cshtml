@@ -1,27 +1,50 @@
 ﻿@model Budgeter.Models.Invitation
 
-<div class="col-md-offset-1 col-md-5 content">
-    <h3>Join Household</h3>
-    <p>If you've received an e-mail to join a household, enter your invitation code here.</p>
-    <p class="text-danger">@ViewBag.Message</p>
-    @using (Html.BeginForm("JoinHousehold", "Households"))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                <label for="inviteCode" class="control-label col-md-4">Invitation Code</label>
-                <div class="col-md-6">
-                    <input type="text" name="inviteCode" class="form-control" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Join Household</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 content">
+            <p>If you've received an e-mail to join a household, enter your invitation code here.</p>
+            <p class="text-danger">@ViewBag.Message</p>
+            @using (Html.BeginForm("JoinHousehold", "Households"))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label for="inviteCode" class="control-label col-md-4">Invitation Code</label>
+                        <div class="col-md-6">
+                            <input type="text" name="inviteCode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <input type="submit" value="Join Household" class="btn btn-primary" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input type="submit" value="Join Household" class="btn btn-default" />
+                <hr />
+
+                <a href="@Url.Action("Create", "Households")" role="button" class="btn btn-success"><h5>If you don't have an invitation, create a new household here</h5></a>
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>About Households</h4>
                 </div>
+                <div class="panel-body">
+                    <p>Households are how we group accounts and users.</p>
+                    <p>Each user belongs to only one household, but the household can have many users.</p>
+                    <p>Each user in your household has full access to all account data.</p>
+                </div>
+
             </div>
         </div>
-        <h3>Create Household</h3>
-        <p>If you don't have an invitation, create a new household <a href="@Url.Action("Create", "Households")">here</a>.</p>
-    }
+
+    </div>
 </div>
