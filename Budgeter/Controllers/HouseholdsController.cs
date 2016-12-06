@@ -19,9 +19,12 @@ namespace Budgeter.Controllers
 
 
         // GET: Households
+        [Authorize]
         public ActionResult Index()
         {
-            return View(db.Households.ToList());
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var householdId = user.HouseholdId;
+            return RedirectToAction("Details", new { id = householdId });
         }
 
         // GET: Households/JoinHousehold
@@ -32,6 +35,7 @@ namespace Budgeter.Controllers
            
 
         // POST: Households/JoinHousehold
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> JoinHousehold(string inviteCode)
         {
