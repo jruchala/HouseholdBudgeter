@@ -42,7 +42,7 @@
                     <div class="panel-body">
                         <section id="loginForm">
                             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
+                            {
                                 @Html.AntiForgeryToken()
                                 
 
@@ -74,6 +74,7 @@
                                         <input type="submit" value="Log in" class="btn btn-default" />
                                     </div>
                                 </div>
+                            }
                                 <p>
                                     @Html.ActionLink("Register as a new user", "Register") | @Html.ActionLink("Forgot Your Password?", "ForgotPassword")
                                 </p>
@@ -83,7 +84,6 @@
                                         @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
                                     </section>
                                 </div>
-                            }
                         </section>
                     </div>
                 </div>
