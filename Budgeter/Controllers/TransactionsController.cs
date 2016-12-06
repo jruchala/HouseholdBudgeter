@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Budgeter.Controllers
 {
+    [RequireHttps]
     public class TransactionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

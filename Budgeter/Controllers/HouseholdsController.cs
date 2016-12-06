@@ -13,6 +13,7 @@ using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
+    [RequireHttps]
     public class HouseholdsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -13,6 +13,7 @@ using Budgeter.Models;
 namespace Budgeter.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
