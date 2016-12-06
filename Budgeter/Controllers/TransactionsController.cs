@@ -9,12 +9,14 @@ using System.Web.Mvc;
 using Budgeter.Models;
 using Microsoft.AspNet.Identity;
 using Budgeter.Helpers;
+using System.Threading.Tasks;
 
 namespace Budgeter.Controllers
 {
     public class TransactionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        OverdraftNotificationHelper overdraftHelper = new OverdraftNotificationHelper();
 
         // GET: Transactions
         public ActionResult Index()
@@ -46,7 +48,7 @@ namespace Budgeter.Controllers
             return View();
         }
 
-        public bool UpdateAccountBalance(bool IsIncome, bool IsReconciled, decimal Amount, int? AccountId)
+        public async Task<bool> UpdateAccountBalance(bool IsIncome, bool IsReconciled, decimal Amount, int? AccountId)
         {
             var account = db.Accounts.Find(AccountId);
             account.Balance = (IsIncome) ? account.Balance + Amount : account.Balance - Amount;
@@ -57,6 +59,11 @@ namespace Budgeter.Controllers
             else
             {
                 account.ReconciledBalance = account.ReconciledBalance;
+            }
+            if (account.Balance < 0)
+            {
+                string userEmail = db.Users.Find(User.Identity.GetUserId()).Email;
+                await overdraftHelper.SendNotification(account.Name, userEmail);
             }
             db.Accounts.Attach(account);
             db.Entry(account).Property("Balance").IsModified = true;
@@ -80,7 +87,6 @@ namespace Budgeter.Controllers
                 transaction.IsVoid = false;
                 if (transaction.TransactionType == TransactionType.Expense)
                 {
-                    
                     UpdateAccountBalance(false, false, transaction.Amount, transaction.AccountId);
                 }
                 else
