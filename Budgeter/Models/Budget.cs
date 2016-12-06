@@ -16,11 +16,14 @@ namespace Budgeter.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Amount { get; set; }
-
+        public virtual ICollection<BudgetItem> BudgetItems { get; set; }
         public virtual Household household { get; set; }
         public int HouseholdId { get; set; }
       
-
+        public Budget()
+        {
+            this.BudgetItems = new HashSet<BudgetItem>();
+        }
 
     }
 }
