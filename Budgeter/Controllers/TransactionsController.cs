@@ -77,6 +77,7 @@ namespace Budgeter.Controllers
             {
                 transaction.EnteredById = User.Identity.GetUserId();
                 transaction.Date = DateTime.Now;
+                transaction.IsVoid = false;
                 if (transaction.TransactionType == TransactionType.Expense)
                 {
                     
@@ -170,7 +171,10 @@ namespace Budgeter.Controllers
         {
             Transaction transaction = db.Transactions.Find(id);
             bool AddBalance = (transaction.TransactionType == TransactionType.Expense) ? true : false;
-            UpdateAccountBalance(AddBalance, false, transaction.Amount, transaction.AccountId);
+            if (!transaction.IsVoid)
+            {
+                UpdateAccountBalance(AddBalance, false, transaction.Amount, transaction.AccountId);
+            }
             db.Transactions.Remove(transaction);
             db.SaveChanges();
             return RedirectToAction("Details", "Accounts", new { id = AccountId });
@@ -200,6 +204,7 @@ namespace Budgeter.Controllers
             bool AddBalance = (transaction.TransactionType == TransactionType.Expense) ? true : false;
             UpdateAccountBalance(AddBalance, false, transaction.Amount, transaction.AccountId);
             transaction.Description += " VOID";
+            transaction.IsVoid = true;
             
             db.SaveChanges();
             return RedirectToAction("Details", "Accounts", new { id = AccountId });
