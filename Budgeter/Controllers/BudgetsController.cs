@@ -64,6 +64,15 @@ namespace Budgeter.Controllers
             return View(budget);
         }
 
+        public bool UpdateBudgetAmount(bool AddAmount, decimal Amount, int Frequency, int? BudgetId)
+        {
+            var budget = db.Budgets.Find(BudgetId);
+            budget.Amount = (AddAmount) ? budget.Amount + (Amount * Frequency / 12) : budget.Amount - (Amount * Frequency / 12);
+            db.Entry(budget).State = EntityState.Modified;
+            db.SaveChanges();
+            return true; 
+        }
+
         // GET: Budgets/AddBudgetItem/5
         public ActionResult AddBudgetItem(int? budgetId)
         {
@@ -87,12 +96,12 @@ namespace Budgeter.Controllers
                 item.Category = db.Categories.FirstOrDefault(c => c.Id == categoryId);
                 db.BudgetItems.Add(item);
                 budget.BudgetItems.Add(item);
-
+                
                 db.SaveChanges();
+                UpdateBudgetAmount(true, amount, frequency, budget.Id);
 
 
-
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = budget.Id });
             }
 
             return RedirectToAction("Index");
