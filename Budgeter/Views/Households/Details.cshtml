@@ -8,9 +8,6 @@
     <div class="row">
         <h2><i class="fa fa-home"></i> @Html.DisplayFor(model => model.Name)</h2>
         <a href="@Url.Action("Edit", "Households", new { id = Model.Id }, "")" role="button" class="btn btn-xs"><i class="fa fa-fw fa-edit"></i>Rename Household</a>
-
-        @if (User.IsInRole("Admin"))
-        { @Html.ActionLink(" | Back to List", "Index")}
     </div>
     <div class="row">
         <div class="col-md-8">
