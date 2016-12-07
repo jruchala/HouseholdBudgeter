@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Budgeter.Models;
 using Microsoft.AspNet.Identity;
+using Budgeter.Helpers;
 
 namespace Budgeter.Controllers
 {
@@ -62,6 +63,41 @@ namespace Budgeter.Controllers
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", budget.HouseholdId);
             return View(budget);
         }
+
+        // GET: Budgets/AddBudgetItem/5
+        public ActionResult AddBudgetItem(int? budgetId)
+        {
+            ViewBag.BudgetId = budgetId;
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            return View();
+        }
+
+        // POST: Budgets/AddBudgetItem/5
+        [HttpPost]
+        public ActionResult AddBudgetItem(int frequency, decimal amount, int categoryId)
+        {
+            if (ModelState.IsValid)
+            {
+                var householdId = User.Identity.GetHouseholdId();
+                var budget = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId);
+                var item = new BudgetItem();
+                item.Frequency = frequency;
+                item.Amount = amount;
+                item.CategoryId = categoryId;
+                item.Category = db.Categories.FirstOrDefault(c => c.Id == categoryId);
+                db.BudgetItems.Add(item);
+                budget.BudgetItems.Add(item);
+
+                db.SaveChanges();
+
+
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         // GET: Budgets/Edit/5
         public ActionResult Edit(int? id)

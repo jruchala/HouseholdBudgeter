@@ -64,13 +64,15 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <p>
+            <a href="@Url.Action("Create", "Transactions", new { accountId = Model.Id })" role="button" class="btn btn-primary">Add Transaction</a>
+            <a href="@Url.Action("Details", "Households", new { id = Model.HouseholdId})" role="button" class="btn btn-default"><i class="fa fa-fw fa-home"></i>Back to Household</a>
+        </p>
+    </div>
 </div>
 
 <hr />
-<p>
-    <a href="@Url.Action("Create", "Transactions", new { accountId = Model.Id })" role="button" class="btn btn-primary">Add Transaction</a>
-    <a href="@Url.Action("Details", "Households", new { id = Model.HouseholdId})" role="button" class="btn btn-default"><i class="fa fa-fw fa-home"></i>Back to Household</a>
-</p>
 @section scripts{
 
     <!--DataTables-->

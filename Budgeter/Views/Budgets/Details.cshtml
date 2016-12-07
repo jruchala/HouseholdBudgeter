@@ -32,50 +32,41 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-
+                        <th></th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @foreach (var item in Model.BudgetItems)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Edit", "BudgetItems", new { id = item.Id})"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href="@Url.Action("Delete", "BudgetItems", new { id = item.Id})"><i class="fa fa-fw fa-trash"></i></a>
+                            </td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.Amount</td>
+                            <td>@item.Frequency</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div class="row"></div>
+    <div class="row">
+        <a href="@Url.Action("AddBudgetItem", "Budgets", new { budgetId = Model.Id }, "")" role="button" class="btn btn-primary">Add Budget Item</a>
+        <a href="@Url.Action("Details", "Households", new { id = Model.HouseholdId})" role="button" class="btn btn-default"><i class="fa fa-fw fa-home"></i>Back to Household</a>
+    </div>
 </div>
 
-<div>
-    <h4>Budget</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.household.Name)
-        </dt>
+@section scripts{
 
-        <dd>
-            @Html.DisplayFor(model => model.household.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <!--DataTables-->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('.table').DataTable();
+    </script>
+}
