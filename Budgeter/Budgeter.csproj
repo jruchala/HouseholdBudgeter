@@ -399,7 +399,7 @@
     <Content Include="Views\BudgetItems\Create.cshtml" />
     <Content Include="Views\Budgets\DeleteBudgetItem.cshtml" />
     <Content Include="Views\BudgetItems\Details.cshtml" />
-    <Content Include="Views\BudgetItems\Edit.cshtml" />
+    <Content Include="Views\Budgets\EditBudgetItem.cshtml" />
     <Content Include="Views\BudgetItems\Index.cshtml" />
     <Content Include="Views\Budgets\AddBudgetItem.cshtml" />
     <None Include="Views\Home\Index.cshtml" />

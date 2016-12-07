@@ -44,7 +44,7 @@
                     {
                         <tr>
                             <td>
-                                <a href="@Url.Action("Edit", "BudgetItems", new { id = item.Id})"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href="@Url.Action("EditBudgetItem", "Budgets", new { id = item.Id})"><i class="fa fa-fw fa-edit"></i></a>
                                 <a href="@Url.Action("DeleteBudgetItem", "Budgets", new { id = item.Id})"><i class="fa fa-fw fa-trash"></i></a>
                             </td>
                             <td>@item.Category.Name</td>

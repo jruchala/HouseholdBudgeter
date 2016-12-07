@@ -107,6 +107,42 @@ namespace Budgeter.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Budgets/EditBudgetItem/5
+        public ActionResult EditBudgetItem(int? id)
+        {
+            var model = db.BudgetItems.Find(id);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", model.CategoryId);
+            return View(model);
+        }
+        
+        // POST: Budgets/EditBudgetItem/5
+        [HttpPost]
+        public ActionResult EditBudgetItem([Bind(Include = "Id,BudgetId,Amount,Frequency,CategoryId")] BudgetItem item)
+        {
+            if (ModelState.IsValid)
+            {
+                var householdId = User.Identity.GetHouseholdId();
+                var budget = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId);
+                var oldItem = db.BudgetItems.AsNoTracking().FirstOrDefault(m => m.Id == item.Id);
+
+                budget.Amount -= oldItem.Amount * oldItem.Frequency / 12;
+                budget.Amount += item.Amount * item.Frequency / 12;
+
+                db.BudgetItems.Attach(item);
+                db.Entry(item).Property("Amount").IsModified = true;
+                db.Entry(item).Property("Frequency").IsModified = true;
+                db.Entry(item).Property("CategoryId").IsModified = true;
+                db.Budgets.Attach(budget);
+                db.Entry(budget).Property("Amount").IsModified = true;
+               
+                db.SaveChanges();
+
+            }
+
+            return RedirectToAction("Index", "Budgets");
+        }
+
+
         // GET: Budgets/DeletBudgetItem/5
         public ActionResult DeleteBudgetItem(int? id)
         {
