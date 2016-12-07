@@ -20,8 +20,8 @@ namespace Budgeter.Controllers
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
-            var budgets = db.Budgets.Where(b => b.HouseholdId == user.HouseholdId).ToList();
-            return View(budgets.ToList());
+            var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == user.HouseholdId).Id;
+            return RedirectToAction("Details", new { id = budgetId } );
         }
 
         // GET: Budgets/Details/5
