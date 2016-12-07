@@ -39,7 +39,7 @@
             <div class="row">
                 <h4>Accounts</h4>
                 @foreach (var account in Model.Accounts)
-            {
+                {
                     <p>
                         <a href="@Url.Action("Details", "Accounts", new { id = account.Id}, "")">
                             @Html.DisplayFor(modelItem => account.Name)
@@ -52,6 +52,13 @@
             <div class="row">
                 <a href="@Url.Action("Create", "Accounts", new { HouseholdId = Model.Id })" role="button" class="btn btn-success">Add a Bank Account</a>
                 <a href="@Url.Action("Index", "Accounts", new { householdId = Model.Id }, "")" role="button" class="btn btn-primary">View Bank Accounts</a>
+            </div>
+            <div class="row">
+                <h4>Budget</h4>
+                @foreach (var budget in Model.Budgets)
+                {
+                    <a href="@Url.Action("Details", "Budgets", new { id = budget.Id}, "")">@Html.DisplayFor(modelItem => budget.Name)</a>
+                }
             </div>
         </div>
         <div class="col-md-4">
@@ -99,7 +106,7 @@
                 </div>
             </div>
         </div>
-        </div>
-    
-
     </div>
+
+
+</div>
