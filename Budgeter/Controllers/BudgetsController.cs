@@ -107,6 +107,32 @@ namespace Budgeter.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Budgets/DeletBudgetItem/5
+        public ActionResult DeleteBudgetItem(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BudgetItem item = db.BudgetItems.Find(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            return View(item);
+        }
+
+        // POST: Budgets/DeleteBudgetItem/5
+        [HttpPost]
+        public ActionResult DeleteBudgetItem(int id)
+        {
+            var category = db.Categories.Find(id);
+            var item = db.BudgetItems.Find(id);
+            UpdateBudgetAmount(false, item.Amount, item.Frequency, item.BudgetId);
+            db.BudgetItems.Remove(item);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Budgets", new { id = item.BudgetId });
+        }
 
         // GET: Budgets/Edit/5
         public ActionResult Edit(int? id)
