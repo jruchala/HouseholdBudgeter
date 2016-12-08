@@ -10,21 +10,21 @@ namespace Budgeter.Helpers
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public decimal BudgetIdSum(int? budgetId)
-        {
-            decimal transactionSum = 0M;
-            var items = db.BudgetItems.Where(i => i.BudgetId == budgetId);
-            foreach (var item in items)
-            {
-                var itemTransactions = db.Transactions.Where(t => t.CategoryId == item.CategoryId);
-                foreach (var transaction in itemTransactions)
-                {
-                    transactionSum += transaction.Amount;
-                }
-            }
+        //public decimal BudgetIdSum(int? budgetId)
+        //{
+        //    decimal transactionSum = 0M;
+        //    var items = db.BudgetItems.Where(i => i.BudgetId == budgetId);
+        //    foreach (var item in items)
+        //    {
+        //        var itemTransactions = db.Transactions.Where(t => t.BudgetItemId == item.BudgetItemId);
+        //        foreach (var transaction in itemTransactions)
+        //        {
+        //            transactionSum += transaction.Amount;
+        //        }
+        //    }
             
-            return transactionSum;
-        }
+        //    return transactionSum;
+        //}
 
 
 

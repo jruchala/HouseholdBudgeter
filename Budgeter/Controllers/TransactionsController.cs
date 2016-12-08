@@ -22,7 +22,7 @@ namespace Budgeter.Controllers
         // GET: Transactions
         public ActionResult Index()
         {
-            var transactions = db.Transactions.Include(t => t.Account).Include(t => t.Category);
+            var transactions = db.Transactions.Include(t => t.Account).Include(t => t.BudgetItem);
             return View(transactions.ToList());
         }
 
@@ -46,6 +46,7 @@ namespace Budgeter.Controllers
         {
             ViewBag.AccountId = accountId;
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name");
             return View();
         }
 
@@ -100,7 +101,7 @@ namespace Budgeter.Controllers
             }
 
             ViewBag.AccountId = transaction.AccountId;
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 
@@ -120,7 +121,7 @@ namespace Budgeter.Controllers
             var household = db.Households.Find(householdId);
             var accounts = household.Accounts.ToList();
             ViewBag.AccountId = new SelectList(accounts, "Id", "Name", transaction.AccountId);
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 
@@ -152,7 +153,7 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Details", "Accounts", new { id = transaction.AccountId });
             }
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 

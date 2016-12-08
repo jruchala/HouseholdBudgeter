@@ -35,9 +35,6 @@ namespace Budgeter.Models
         [Display(Name ="Budget Item")]
         public int? BudgetItemId { get; set; }
 
-        [Display(Name ="Category")]
-        public int CategoryId { get; set; }
-
         [Display(Name ="Entered By")]
         public string EnteredById { get; set; }
 
@@ -48,7 +45,6 @@ namespace Budgeter.Models
 
         [Display(Name="Type")]
         public virtual TransactionType TransactionType { get; set; }
-        public virtual Category Category { get; set; }
         public virtual BudgetItem BudgetItem { get; set; }
         public virtual ApplicationUser EnteredByUser { get; set; }
     }

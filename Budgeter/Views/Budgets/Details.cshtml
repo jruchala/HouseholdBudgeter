@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Category</th>
+                        <th>Item</th>
                         <th>Amount</th>
                         <th>Frequency</th>
                     </tr>
@@ -50,7 +50,7 @@
                                 <a href="@Url.Action("EditBudgetItem", "Budgets", new { id = item.Id})"><i class="fa fa-fw fa-edit"></i></a>
                                 <a href="@Url.Action("DeleteBudgetItem", "Budgets", new { id = item.Id})"><i class="fa fa-fw fa-trash"></i></a>
                             </td>
-                            <td>@item.Category.Name</td>
+                            <td>@item.Name</td>
                             <td>@item.Amount</td>
                             <td>@item.Frequency</td>
                         </tr>
