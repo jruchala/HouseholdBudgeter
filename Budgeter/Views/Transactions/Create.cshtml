@@ -1,7 +1,7 @@
 ﻿@model Budgeter.Models.Transaction
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Add Transaction";
 
     var accountId = ViewBag.AccountId;
 }
@@ -9,63 +9,56 @@
 
 <h2>Add Transaction</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <input  type="hidden" name="AccountId" value="@accountId" />
-    
-    
+    <input type="hidden" name="AccountId" value="@accountId" />
+
+
     <div class="form-horizontal">
-        <h4>Transaction</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @placeholder = "Describe Transaction" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-2">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @placeholder = "$0.00" } })
                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
             </div>
-        </div>
 
-        <div class="form-group">
             @Html.LabelFor(model => model.Reconciled, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-2">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.Reconciled)
                     @Html.ValidationMessageFor(model => model.Reconciled, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
             @Html.LabelFor(model => model.ReconciledAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-2">
+                @Html.EditorFor(model => model.ReconciledAmount, new { htmlAttributes = new { @class = "form-control", @placeholder = "$0.00" } })
                 @Html.ValidationMessageFor(model => model.ReconciledAmount, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BudgetItemId, "Budget Item", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("BudgetItemId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BudgetItemId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TransactionType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Expense/Income", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
                 @Html.EnumDropDownListFor(model => model.TransactionType, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
+            </div>
+
+            @Html.LabelFor(model => model.BudgetItemId, "Budget Item", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
+                @Html.DropDownList("BudgetItemId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BudgetItemId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -78,5 +71,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Account", "Details", "Accounts", new { id = accountId} , "")
 </div>
