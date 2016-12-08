@@ -26,6 +26,8 @@ namespace Budgeter.Helpers
             return transactionSum;
         }
 
+
+
         public decimal TotalExpenses(int householdId)
         {
             decimal totalExpenses = 0m;

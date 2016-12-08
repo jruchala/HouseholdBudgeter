@@ -16,9 +16,14 @@ namespace Budgeter.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Amount { get; set; }
         public int Frequency { get; set; }
-
+        public virtual ICollection<Transaction> Transactions { get; set; }
 
         public virtual Budget Budget { get; set; }
         public virtual Category Category { get; set; }
+
+        public BudgetItem()
+        {
+            this.Transactions = new HashSet<Transaction>();
+        }
     }
 }
