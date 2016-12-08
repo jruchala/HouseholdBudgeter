@@ -27,6 +27,7 @@ namespace Budgeter.Controllers
                     ViewBag.BudgetsCount = model.Budgets.Count();
                     ViewBag.BudgetedExpenses = model.Budgets.FirstOrDefault().Amount;
                     
+                    
                     if (model.Accounts.Any())
                     {
                         ViewBag.AccountAmount = "$" + model.Accounts.FirstOrDefault().Balance;

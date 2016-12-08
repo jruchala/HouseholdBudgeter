@@ -122,7 +122,7 @@ namespace Budgeter.Controllers
                 budget.HouseholdId = household.Id;
                 budget.household = household;
                 budget.Amount = 0M;
-                budget.Name = "New Budget for " + household.Name;
+                budget.Name = "Budget for " + household.Name;
                 
                 db.Budgets.Add(budget);
                 user.HouseholdId = household.Id;

@@ -80,13 +80,13 @@ namespace Budgeter.Controllers
         public ActionResult AddBudgetItem(int? budgetId)
         {
             ViewBag.BudgetId = budgetId;
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems.Where(i => i.BudgetId == budgetId), "Id", "Name");
             return View();
         }
 
         // POST: Budgets/AddBudgetItem/5
         [HttpPost]
-        public ActionResult AddBudgetItem(int frequency, decimal amount, int categoryId)
+        public ActionResult AddBudgetItem(int frequency, decimal amount, string name)
         {
             if (ModelState.IsValid)
             {
@@ -95,8 +95,8 @@ namespace Budgeter.Controllers
                 var item = new BudgetItem();
                 item.Frequency = frequency;
                 item.Amount = amount;
-                item.CategoryId = categoryId;
-                item.Category = db.Categories.FirstOrDefault(c => c.Id == categoryId);
+                item.Name = name;
+                
                 db.BudgetItems.Add(item);
                 budget.BudgetItems.Add(item);
                 

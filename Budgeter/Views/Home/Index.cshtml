@@ -9,10 +9,6 @@
             <br />
             <h2>Welcome to HouseFin </h2>
             <h4>a Budget application</h4>
-            @if (User.IsInRole("Admin"))
-            {
-                <a href="@Url.Action("Index", "Households")" role="button" class="btn btn-success"><i class="glyphicon glyphicon-home"></i> Households</a>
-            }
         </div>
     </div>
     <div class="row">

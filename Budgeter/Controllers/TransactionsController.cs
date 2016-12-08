@@ -130,7 +130,7 @@ namespace Budgeter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,TransactionType")] Transaction transaction)
+        public ActionResult Edit([Bind(Include = "Id,Description,Date,Amount,Reconciled,ReconciledAmount,AccountId,BudgetItemId,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
