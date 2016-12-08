@@ -6,8 +6,18 @@
 
 <div class="container">
     <div class="row">
-        <h2><i class="fa fa-home"></i> @Html.DisplayFor(model => model.Name)</h2>
-        <a href="@Url.Action("Edit", "Households", new { id = Model.Id }, "")" role="button" class="btn btn-xs"><i class="fa fa-fw fa-edit"></i>Rename Household</a>
+        <div class="col-md-8">
+            <h2><i class="fa fa-home"></i> @Html.DisplayFor(model => model.Name)</h2>
+            <a href="@Url.Action("Edit", "Households", new { id = Model.Id }, "")" role="button" class="btn btn-xs"><i class="fa fa-fw fa-edit"></i>Rename Household</a>
+        </div>
+        <div class="col-md-4">
+            @foreach (var budget in Model.Budgets)
+            {
+
+                <a href="@Url.Action("Details", "Budgets", new { id = budget.Id}, "")" role="button" class="btn btn-warning"><h4><i class="fa fa-bar-chart"></i> @Html.DisplayFor(modelItem => budget.Name)</h4></a>
+
+            }
+        </div>
     </div>
     <div class="row">
         <div class="col-md-8">

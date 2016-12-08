@@ -41,15 +41,6 @@ namespace Budgeter.Controllers
             return View(transaction);
         }
 
-        // GET: Transactions/Create
-        public ActionResult Create(int accountId)
-        {
-            ViewBag.AccountId = accountId;
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
-            ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name");
-            return View();
-        }
-
         public async Task<bool> UpdateAccountBalance(bool IsIncome, bool IsReconciled, decimal Amount, int? AccountId)
         {
             var account = db.Accounts.Find(AccountId);
@@ -75,12 +66,21 @@ namespace Budgeter.Controllers
             return true;
         }
 
+        // GET: Transactions/Create
+        public ActionResult Create(int accountId)
+        {
+            ViewBag.AccountId = accountId;
+            var householdId = User.Identity.GetHouseholdId();
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems.Where(i => i.Budget.HouseholdId == householdId), "Id", "Name");
+            return View();
+        }
+
         // POST: Transactions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Description,Amount,Reconciled,ReconciledAmount,AccountId,CategoryId,TransactionType")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Description,Amount,Reconciled,ReconciledAmount,AccountId,BudgetItemId,TransactionType")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace Budgeter.Controllers
             }
 
             ViewBag.AccountId = transaction.AccountId;
-            ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems.Where(i => i.Budget.HouseholdId == User.Identity.GetHouseholdId()), "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 
@@ -121,7 +121,7 @@ namespace Budgeter.Controllers
             var household = db.Households.Find(householdId);
             var accounts = household.Accounts.ToList();
             ViewBag.AccountId = new SelectList(accounts, "Id", "Name", transaction.AccountId);
-            ViewBag.CategoryId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems.Where(i => i.Budget.HouseholdId == householdId), "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 
@@ -153,7 +153,7 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Details", "Accounts", new { id = transaction.AccountId });
             }
             ViewBag.AccountId = new SelectList(db.Accounts, "Id", "Name", transaction.AccountId);
-            ViewBag.CategoryId = new SelectList(db.BudgetItems, "Id", "Name", transaction.BudgetItemId);
+            ViewBag.BudgetItemId = new SelectList(db.BudgetItems.Where(i => i.Budget.HouseholdId == User.Identity.GetHouseholdId()), "Id", "Name", transaction.BudgetItemId);
             return View(transaction);
         }
 

@@ -115,6 +115,7 @@ namespace Budgeter.Controllers
         {
             var model = db.BudgetItems.Find(id);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", model.CategoryId);
+
             return View(model);
         }
         
