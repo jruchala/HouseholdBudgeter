@@ -239,7 +239,6 @@
     <Compile Include="Models\Budget.cs" />
     <Compile Include="Models\BudgetItem.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\Household.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Invitation.cs" />

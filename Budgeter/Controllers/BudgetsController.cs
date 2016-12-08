@@ -22,7 +22,7 @@ namespace Budgeter.Controllers
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == user.HouseholdId).Id;
-            ViewBag.BudgetTransactionSum = helper.BudgetIdSum(budgetId);
+            
             return RedirectToAction("Details", new { id = budgetId } );
         }
 
@@ -38,6 +38,7 @@ namespace Budgeter.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.TotalExpenses = helper.TotalExpenses(budget.HouseholdId);
             return View(budget);
         }
 

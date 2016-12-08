@@ -10,7 +10,7 @@ namespace Budgeter.Helpers
     {
         ApplicationDbContext db = new ApplicationDbContext();
 
-        public decimal BudgetIdSum(int budgetId)
+        public decimal BudgetIdSum(int? budgetId)
         {
             decimal transactionSum = 0M;
             var items = db.BudgetItems.Where(i => i.BudgetId == budgetId);
@@ -26,10 +26,22 @@ namespace Budgeter.Helpers
             return transactionSum;
         }
 
-        //public decimal BudgetDifference()
-        //{
-
-        //    return difference;
-        //}
+        public decimal TotalExpenses(int householdId)
+        {
+            decimal totalExpenses = 0m;
+            var accounts = db.Accounts.Where(a => a.HouseholdId == householdId);
+            foreach (var account in accounts)
+            {
+                var transactions = db.Transactions.Where(t => t.AccountId == account.Id);
+                foreach(var transaction in transactions)
+                {
+                    if (transaction.TransactionType == TransactionType.Expense && !transaction.IsVoid)
+                    {
+                        totalExpenses += transaction.Amount;
+                    }
+                }
+            }
+            return totalExpenses;
+        }
     }
 }
