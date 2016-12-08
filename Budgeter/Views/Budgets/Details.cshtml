@@ -1,7 +1,7 @@
 ﻿@model Budgeter.Models.Budget
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Budget";
     ViewBag.BudgetId = Model.Id;
 }
 
@@ -22,7 +22,9 @@
                 <div class="col-md-6">
                     <h4>Expenses</h4>
                     <br />
-                   
+                    <p>
+                        @ViewBag.BudgetTransactionSum
+                    </p>
 
                 </div>
             </div>

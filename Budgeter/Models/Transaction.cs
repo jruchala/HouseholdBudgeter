@@ -24,6 +24,8 @@ namespace Budgeter.Models
         public bool Reconciled { get; set; }
 
         [Display(Name ="Reconciled Amount")]
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal? ReconciledAmount { get; set; }
 
         [Display(Name ="Account")]

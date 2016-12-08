@@ -15,12 +15,14 @@ namespace Budgeter.Controllers
     public class BudgetsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        BudgetCalculationHelper helper = new BudgetCalculationHelper();
 
         // GET: Budgets
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == user.HouseholdId).Id;
+            ViewBag.BudgetTransactionSum = helper.BudgetIdSum(budgetId);
             return RedirectToAction("Details", new { id = budgetId } );
         }
 
