@@ -12,6 +12,7 @@ namespace Budgeter.Controllers
     public class HomeController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        BudgetCalculationHelper helper = new BudgetCalculationHelper();
 
         public ActionResult Index()
         {
@@ -37,6 +38,8 @@ namespace Budgeter.Controllers
                     {
                         ViewBag.AccountAmount = "Add a bank account to start tracking your budget";
                     }
+
+                  
                     return View(model);
                 }
                 else

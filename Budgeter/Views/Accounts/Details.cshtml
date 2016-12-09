@@ -40,6 +40,7 @@
                         <th>Amount</th>
                         <th>Reconciled</th>
                         <th>Updated By</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -58,6 +59,8 @@
                             <td>@Html.DisplayFor(modelItem => transaction.Amount)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.Reconciled)</td>
                             <td>@Html.DisplayFor(modelItem => transaction.EnteredByUser)</td>
+                            
+
                         </tr>
                     }
                 </tbody>

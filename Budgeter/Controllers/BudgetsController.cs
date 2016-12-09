@@ -111,11 +111,11 @@ namespace Budgeter.Controllers
         }
 
         // GET: Budgets/EditBudgetItem/5
-        public ActionResult EditBudgetItem(int? id)
+        public ActionResult EditBudgetItem(int id)
         {
             var model = db.BudgetItems.Find(id);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", model.CategoryId);
-
+            ViewBag.Expenses = helper.TotalExpensePerBudgetItem(id);
             return View(model);
         }
         
