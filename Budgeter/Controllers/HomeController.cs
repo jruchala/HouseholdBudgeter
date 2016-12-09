@@ -1,5 +1,7 @@
 ﻿using Budgeter.Helpers;
 using Budgeter.Models;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,40 @@ namespace Budgeter.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+        }
+        
+        public ActionResult GetChart()
+        {
+            if (ModelState.IsValid)
+            {
+                var householdId = User.Identity.GetHouseholdId();
+                var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId).Id;
+                var budgetItems = db.BudgetItems.Where(i => i.BudgetId == budgetId);
+                List<decimal> budgetItemAmount = new List<decimal>();
+                List<decimal> budgetItemExpense = new List<decimal>();
+                List<string> budgetItemName = new List<string>();
+                foreach (var item in budgetItems)
+                {
+                    budgetItemAmount.Add(item.Amount);
+                    budgetItemExpense.Add(helper.TotalExpensePerBudgetItem(item.Id));
+                    budgetItemName.Add(item.Name);
+                }
+
+
+                var data = new[]
+                {
+                    new { y = budgetItemName[0], a = budgetItemAmount[0], b = budgetItemExpense[0]},
+                    new { y = budgetItemName[1], a = budgetItemAmount[1], b = budgetItemExpense[1]},
+                    new { y = budgetItemName[2], a = budgetItemAmount[2], b = budgetItemExpense[2]},
+                    new { y = budgetItemName[3], a = budgetItemAmount[3], b = budgetItemExpense[3]},
+                    new { y = budgetItemName[4], a = budgetItemAmount[4], b = budgetItemExpense[4]}
+                };
+
+                //return Content(JsonConvert.SerializeObject(data), "application/json");
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+
+            return View("Index", "Home");
         }
 
         public ActionResult About()

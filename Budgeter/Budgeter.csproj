@@ -463,6 +463,7 @@
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Void.cshtml" />
     <Content Include="Views\Shared\_DashboardWidgets.cshtml" />
+    <Content Include="Views\Shared\_DashboardChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,8 +23,8 @@ namespace Budgeter
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Content/metisMenu/metisMenu.min.js",
-                      "~/Content/morrisjs/morris.min.js",
                       "~/Content/raphael/raphael.min.js",
+                      "~/Content/morrisjs/morris.min.js",
                       "~/Content/morris-data.js",
                       "~/Scripts/sb-admin-2.js"));
 
