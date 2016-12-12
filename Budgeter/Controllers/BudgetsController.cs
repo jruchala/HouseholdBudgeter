@@ -39,6 +39,7 @@ namespace Budgeter.Controllers
                 return HttpNotFound();
             }
             ViewBag.TotalExpenses = helper.TotalExpenses(budget.HouseholdId);
+            ViewBag.TotalIncome = helper.TotalIncome(budget.HouseholdId);
             return View(budget);
         }
 

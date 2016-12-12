@@ -14,18 +14,24 @@
         </div>
         <div class="col-md-6 well">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4>Budget Total</h4>
                     <br />
                     @Html.DisplayFor(Model => Model.Amount)
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4>Expenses</h4>
                     <br />
                     <p>
                         $@ViewBag.TotalExpenses
                     </p>
-
+                </div>
+                <div class="col-md-4">
+                    <h4>Income</h4>
+                    <br />
+                    <p>
+                        $@ViewBag.TotalIncome
+                    </p>
                 </div>
             </div>
         </div>

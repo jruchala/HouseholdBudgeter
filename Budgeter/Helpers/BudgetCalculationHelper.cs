@@ -56,5 +56,23 @@ namespace Budgeter.Helpers
             }
             return totalExpenses;
         }
+
+        public decimal TotalIncome(int householdId)
+        {
+            decimal totalIncome = 0M;
+            var accounts = db.Accounts.Where(a => a.HouseholdId == householdId);
+            foreach (var account in accounts)
+            {
+                var transactions = db.Transactions.Where(t => t.AccountId == account.Id);
+                foreach (var transaction in transactions)
+                {
+                    if (transaction.TransactionType == TransactionType.Income && !transaction.IsVoid)
+                    {
+                        totalIncome += transaction.Amount;
+                    }
+                }
+            }
+            return totalIncome;
+        }
     }
 }
