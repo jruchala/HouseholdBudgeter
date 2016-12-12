@@ -60,6 +60,12 @@ namespace Budgeter.Controllers
             {
                 db.Budgets.Add(budget);
                 db.SaveChanges();
+                AddBudgetItem(12, 0M, "Housing");
+                AddBudgetItem(12, 0M, "Utilities");
+                AddBudgetItem(12, 0M, "Transportation");
+                AddBudgetItem(12, 0M, "Groceries");
+                AddBudgetItem(12, 0M, "Clothing");
+                AddBudgetItem(12, 0M, "Entertainment");
                 return RedirectToAction("Index");
             }
 

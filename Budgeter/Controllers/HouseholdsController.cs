@@ -17,7 +17,7 @@ namespace Budgeter.Controllers
     public class HouseholdsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        public BudgetItemsCreationHelper helper = new BudgetItemsCreationHelper();
 
         // GET: Households
         [Authorize]
@@ -128,6 +128,10 @@ namespace Budgeter.Controllers
                 user.HouseholdId = household.Id;
                 household.Budgets.Add(budget);
                 db.Households.Add(household);
+
+
+                db.SaveChanges();
+                helper.CreateBudgetItems(budget.Id);
                 db.SaveChanges();
                 if (household != null)
                 {

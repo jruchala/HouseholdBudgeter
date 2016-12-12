@@ -41,7 +41,50 @@ namespace Budgeter.Controllers
                         ViewBag.AccountAmount = "Add a bank account to start tracking your budget";
                     }
 
+                    // begin chart info
+                    
+                    var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId).Id;
+                    var budgetItems = db.BudgetItems.Where(i => i.BudgetId == budgetId);
+                    List<decimal> budgetItemAmount = new List<decimal>();
+                    List<decimal> budgetItemExpense = new List<decimal>();
+                    List<string> budgetItemName = new List<string>();
+
+                    ViewBag.BudgetItemAmount = new decimal[budgetItems.Count()];
+                    ViewBag.BudgetItemExpense = new decimal[budgetItems.Count()];
+                    ViewBag.BudgetItemName = new string[budgetItems.Count()];
+
+                    foreach (var item in budgetItems)
+                    {
+                        budgetItemAmount.Add((int)item.Amount);   
+                        budgetItemExpense.Add((int)helper.TotalExpensePerBudgetItem(item.Id));
+                        budgetItemName.Add((string)item.Name);
+                    }
+
+
+                    for (int i = 0; i < budgetItems.Count(); i++)
+                    {
+                        ViewBag.BudgetItemAmount[i] = budgetItemAmount[i];
+                        ViewBag.BudgetItemExpense[i] = budgetItemExpense[i];
+                        ViewBag.BudgetItemName[i] = budgetItemName[i];
+                    }
+
+
+                    //foreach (var item in budgetItems)
+                    //{
+                    //    budgetItemAmount.Add(item.Amount);
+                    //    ViewBag.BudgetItemAmount.Append(item.Amount);
+                    //    budgetItemExpense.Add(helper.TotalExpensePerBudgetItem(item.Id));
+                    //    ViewBag.BudgetItemExpense.Append(helper.TotalExpensePerBudgetItem(item.Id));
+                    //    budgetItemName.Add(item.Name);
+                    //    ViewBag.BudgetItemName.Append(item.Name);
+                    //}
                   
+
+
+
+                    // end chart info
+
+
                     return View(model);
                 }
                 else
@@ -56,20 +99,19 @@ namespace Budgeter.Controllers
         
         public ActionResult GetChart()
         {
-            if (ModelState.IsValid)
+
+            var householdId = User.Identity.GetHouseholdId();
+            var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId).Id;
+            var budgetItems = db.BudgetItems.Where(i => i.BudgetId == budgetId);
+            List<decimal> budgetItemAmount = new List<decimal>();
+            List<decimal> budgetItemExpense = new List<decimal>();
+            List<string> budgetItemName = new List<string>();
+            foreach (var item in budgetItems)
             {
-                var householdId = User.Identity.GetHouseholdId();
-                var budgetId = db.Budgets.FirstOrDefault(b => b.HouseholdId == householdId).Id;
-                var budgetItems = db.BudgetItems.Where(i => i.BudgetId == budgetId);
-                List<decimal> budgetItemAmount = new List<decimal>();
-                List<decimal> budgetItemExpense = new List<decimal>();
-                List<string> budgetItemName = new List<string>();
-                foreach (var item in budgetItems)
-                {
-                    budgetItemAmount.Add(item.Amount);
-                    budgetItemExpense.Add(helper.TotalExpensePerBudgetItem(item.Id));
-                    budgetItemName.Add(item.Name);
-                }
+                budgetItemAmount.Add(item.Amount);
+                budgetItemExpense.Add(helper.TotalExpensePerBudgetItem(item.Id));
+                budgetItemName.Add(item.Name);
+            }
 
 
                 var data = new[]
@@ -83,9 +125,7 @@ namespace Budgeter.Controllers
 
                 //return Content(JsonConvert.SerializeObject(data), "application/json");
                 return Json(data, JsonRequestBehavior.AllowGet);
-            }
 
-            return View("Index", "Home");
         }
 
         public ActionResult About()

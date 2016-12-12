@@ -8,7 +8,7 @@ namespace Budgeter.Models
 {
     public class Transaction
     {
-        //TODO:Transaction model
+      
         public int Id { get; set; }
 
         public string Description { get; set; }
