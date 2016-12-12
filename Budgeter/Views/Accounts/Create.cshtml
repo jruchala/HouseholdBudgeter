@@ -6,7 +6,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Accounts", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     
@@ -50,5 +50,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to Household", "Details", "Households", new { id = ViewBag.HouseholdId}, "")
+    @Html.ActionLink("Back to Household", "Index", "Households")
 </div>

@@ -93,6 +93,8 @@ namespace Budgeter.Controllers
                 }
                 else
                 {
+                    transaction.BudgetItem = null;
+                    transaction.BudgetItemId = null;
                     UpdateAccountBalance(true, false, transaction.Amount, transaction.AccountId);
                 }
                 db.Transactions.Add(transaction);

@@ -62,6 +62,13 @@ namespace Budgeter.Helpers
             entertainment.Frequency = 12;
             entertainment.Budget = budget;
             db.BudgetItems.Add(entertainment);
+            BudgetItem income = new BudgetItem();
+            income.BudgetId = budgetId;
+            income.Name = "Income";
+            income.Amount = 0M;
+            income.Frequency = 12;
+            income.Budget = budget;
+            db.BudgetItems.Add(income);
             db.SaveChanges();
 
         }

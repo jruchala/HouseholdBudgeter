@@ -76,14 +76,16 @@ namespace Budgeter.Controllers
         {
             if (ModelState.IsValid)
             {
-                var household = db.Households.Find(User.Identity.GetHouseholdId());
+                var householdId = User.Identity.GetHouseholdId();
+                var household = db.Households.Find(householdId);
                 household.Accounts.Add(account);
                 db.Accounts.Add(account);
                 db.SaveChanges();
-                RedirectToAction("Details", "Households", new { id = household.Id });
+                //RedirectToAction("Index", "Households");
+                return RedirectToAction("Details", "Accounts", new { id = account.Id });
             }
 
-            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", account.HouseholdId);
+            
             return View(account);
         }
 
